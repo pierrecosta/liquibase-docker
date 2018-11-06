@@ -9,7 +9,6 @@ LIQUIBASE_SQLPLUSCONN="c##CodeAPMyAPPown/MyAPPownpwd@(DESCRIPTION=(ADDRESS_LIST=
 LIQUIBASE_USR="c##CodeAPMyAPPown"
 LIQUIBASE_PWD="MyAPPownpwd"
 
-
 # Be in real folder
 cd /liquibase/data
 
@@ -21,4 +20,13 @@ rm samplepim3-db-5.1.13-SNAPSHOT.zip -f
 # END - To Delete
 
 # Command line to execute
-java -cp "/liquibase/tools/liquibase-core-3.5.5.jar:/liquibase/tools/snakeyaml-1.17.jar:/liquibase/tools/ojdbc8-12.2.0.1.jar" liquibase.integration.commandline.Main --driver=oracle.jdbc.OracleDriver -DsqlPlusConn=${LIQUIBASE_SQLPLUSCONN} -DsqlPlusPath=${LIQUIBASE_SQLPLUSPATH} --logFile=/liquibase/logs/liquibase.log --logLevel=debug --changeLogFile=${LIQUIBASE_CHANGELOG} --url=${LIQUIBASE_URL} --username=${LIQUIBASE_USR} --password=${LIQUIBASE_PWD} --contexts=${LIQUIBASE_CONTEXT} -DpackageInfo=${PACKAGE_INFO} ${LIQUIBASE_ACTION} --verbose
+java \
+-DsqlPlusConn=${LIQUIBASE_SQLPLUSCONN} -DsqlPlusPath=${LIQUIBASE_SQLPLUSPATH} \
+-DpackageInfo=${PACKAGE_INFO} \
+-cp "/liquibase/tools/liquibase-core-3.5.5.jar:/liquibase/tools/snakeyaml-1.17.jar:/liquibase/tools/ojdbc8-12.2.0.1.jar" liquibase.integration.commandline.Main \
+--driver=oracle.jdbc.OracleDriver \
+--logFile=/liquibase/logs/liquibase.log --logLevel=debug \
+--changeLogFile=${LIQUIBASE_CHANGELOG} \
+--url=${LIQUIBASE_URL} --username=${LIQUIBASE_USR} --password=${LIQUIBASE_PWD} \
+--contexts=${LIQUIBASE_CONTEXT} \
+${LIQUIBASE_ACTION} --verbose

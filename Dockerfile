@@ -39,11 +39,11 @@ RUN cd /liquibase/tools;\
 	/bin/bash -c 'chmod +x /liquibase/tools/instantclient_12_2/sqlplus';\
 	ln -s /liquibase/tools/instantclient_12_2/libclntsh.so.12.1 /liquibase/tools/instantclient_12_2/libclntsh.so;\
 	ln -s /liquibase/tools/instantclient_12_2/libocci.so.12.1 /liquibase/tools/instantclient_12_2/libocci.so;\
-	export LD_LIBRARY_PATH=/liquibase/tools/instantclient_12_2:$LD_LIBRARY_PATH;\
-	export PATH=/liquibase/tools/instantclient_12_2:$PATH;\
 	rm /liquibase/tools/instantclient-basic-linux.x64-12.2.0.1.0.zip -f;\
 	rm /liquibase/tools/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip -f;
 
+ENV LD_LIBRARY_PATH=/liquibase/tools/instantclient_12_2:${LD_LIBRARY_PATH}
+ENV PATH=/liquibase/tools/instantclient_12_2:${PATH}
 
 # Retrieve Liquibase package
 RUN cd /liquibase/tools;\
