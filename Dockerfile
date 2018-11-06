@@ -12,7 +12,8 @@ ARG snakeyaml_download_url=http://central.maven.org/maven2/org/yaml/snakeyaml/${
 ARG ojdbc_download_url=http://central.maven.org/maven2/com/github/noraui/${ojdbc_name}/${ojdbc_version}/${ojdbc_name}-${ojdbc_version}.jar
 
 # Create directories for liquibase
-RUN mkdir /liquibase/tools;\
+RUN mkdir /liquibase;\
+	mkdir /liquibase/tools;\
 	mkdir /liquibase/data;\
 	mkdir /liquibase/logs;\
 	mkdir /liquibase/templates;\
