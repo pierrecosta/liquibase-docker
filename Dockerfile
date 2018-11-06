@@ -1,6 +1,10 @@
 FROM anapsix/alpine-java:8_jdk
 LABEL maintainer="pierre.costa@capgemini.com"
 
+# Add curl to alpine
+RUN apk add --update curl && \
+    rm -rf /var/cache/apk/*
+
 # Set liquibase variables
 ARG liquibase_version=3.5.5
 ARG snakeyaml_version=1.17
