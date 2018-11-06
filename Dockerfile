@@ -34,7 +34,7 @@ COPY ./liquibase/tools/* /liquibase/tools/
 RUN cd /liquibase/tools;\
 	unzip instantclient-basic-linux.x64-12.2.0.1.0.zip -o -q;\
 	unzip instantclient-sqlplus-linux.x64-12.2.0.1.0.zip -o -q;\
-	/bin/bash -c 'chmod +x /liquibase/tools/instantclient_12_2/sqlplus';
+	/bin/bash -c 'chmod +x /liquibase/tools/instantclient_12_2/sqlplus';\
 	rm /liquibase/tools/instantclient-basic-linux.x64-12.2.0.1.0.zip -f;\
 	rm /liquibase/tools/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip -f;
 
