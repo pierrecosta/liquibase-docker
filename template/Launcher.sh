@@ -1,32 +1,43 @@
+#!/bin/bash
 # Variables to set during docker run
-LIQUIBASE_CHANGELOG="./db/changelog/schema-FR_FRT_TL_AUTO_11121_OWN/changelog-master.yaml"
-LIQUIBASE_SQLPLUSPATH="@./db/changelog/schema-FR_FRT_TL_AUTO_11121_OWN"
-LIQUIBASE_ACTION="status"
-PACKAGE_INFO="5.1.13-SNAPSHOT"
-LIQUIBASE_CONTEXT="dev, init, sqlplus"
-LIQUIBASE_URL="jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=137.74.197.63)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=ORCLCDB)))"
-LIQUIBASE_SQLPLUSCONN="c##CodeAPMyAPPown/MyAPPownpwd@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=137.74.197.63)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=ORCLCDB)))"
-LIQUIBASE_USR="c##CodeAPMyAPPown"
-LIQUIBASE_PWD="MyAPPownpwd"
+LIQUIBASE_SCHEMA='FR_FRT_TL_AUTO_11121_OWN'
+LIQUIBASE_ACTION='status'
+LIQUIBASE_CONTEXT='dev,init,sqlplus'
+
+LIQUIBASE_HOST='137.74.197.63'
+LIQUIBASE_INSTANCE='ORCLCDB'
+LIQUIBASE_PORT='1521'
+
+LIQUIBASE_USR='c##CodeAPMyAPPown'
+LIQUIBASE_PWD='MyAPPownpwd'
+
+# *** BEGIN - Automatic settings *** #
+	# Set thanks to input
+LIQUIBASE_SQLPLUSPATH="@./db/changelog/schema-$LIQUIBASE_SCHEMA"
+LIQUIBASE_CHANGELOG="./db/changelog/schema-$LIQUIBASE_SCHEMA/changelog-master.yaml"
+LIQUIBASE_URL="jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=$LIQUIBASE_HOST)(PORT=$LIQUIBASE_PORT)))(CONNECT_DATA=(SERVICE_NAME=$LIQUIBASE_INSTANCE)))"
+LIQUIBASE_SQLPLUSCONN="$LIQUIBASE_USR/$LIQUIBASE_PWD@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=$LIQUIBASE_HOST)(PORT=$LIQUIBASE_PORT)))(CONNECT_DATA=(SERVICE_NAME=$LIQUIBASE_INSTANCE)))"
+	#Read the manifest to get package info
+PACKAGE_INFO=$(cat /liquibase/data/META-INF/MANIFEST.MF | grep 'Implementation-Version:' | cut -d ' ' -f 2 | cut -d '_' -f 1)
+# *** END - Automatic settings *** #
 
 # Be in real folder
 cd /liquibase/data
 
-# BEGIN - To Delete #
-# Get test package
-mv /liquibase/templates/samplepim3-db-5.1.13-SNAPSHOT.zip .
-unzip samplepim3-db-5.1.13-SNAPSHOT.zip -o -q
-rm samplepim3-db-5.1.13-SNAPSHOT.zip -f
-# END - To Delete
-
 # Command line to execute
-java \
--DsqlPlusConn=${LIQUIBASE_SQLPLUSCONN} -DsqlPlusPath=${LIQUIBASE_SQLPLUSPATH} \
--DpackageInfo=${PACKAGE_INFO} \
--cp "/liquibase/tools/liquibase-core-3.5.5.jar:/liquibase/tools/snakeyaml-1.17.jar:/liquibase/tools/ojdbc8-12.2.0.1.jar" liquibase.integration.commandline.Main \
---driver=oracle.jdbc.OracleDriver \
---logFile=/liquibase/logs/liquibase.log --logLevel=debug \
---changeLogFile=${LIQUIBASE_CHANGELOG} \
---url=${LIQUIBASE_URL} --username=${LIQUIBASE_USR} --password=${LIQUIBASE_PWD} \
---contexts=${LIQUIBASE_CONTEXT} \
-${LIQUIBASE_ACTION} --verbose
+CMD=$(echo \
+-DsqlPlusConn="$LIQUIBASE_SQLPLUSCONN" -DsqlPlusPath="$LIQUIBASE_SQLPLUSPATH" \
+-DpackageInfo="$PACKAGE_INFO" \
+liquibase.integration.commandline.Main \
+--driver="$ORACLE_DRIVER" \
+--logFile="$LIQUIBASE_LOG" --logLevel=debug \
+--changeLogFile="$LIQUIBASE_CHANGELOG" \
+--url="$LIQUIBASE_URL" --username="$LIQUIBASE_USR" --password="$LIQUIBASE_PWD" \
+--contexts="$LIQUIBASE_CONTEXT" \
+"$LIQUIBASE_ACTION" --verbose)
+
+# Print the command line
+echo "$CMD"
+
+# Execute the command line
+java "$CMD"
