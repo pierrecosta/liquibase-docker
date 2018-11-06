@@ -32,6 +32,9 @@ RUN cd /liquibase/tools;\
 	curl -SOLs ${snakeyaml_download_url};\
 	curl -SOLs ${ojdbc_download_url};
 
+# Delete curl from image
+apk del curl
+
 # Unpack the distribution
 ENV LIQUIBASE_CLASSPATH=/liquibase/tools/iquibase-core-${liquibase_version}.jar:/liquibase/tools/snakeyaml-${snakeyaml_version}.jar:/liquibase/tools/${ojdbc_name}-${ojdbc_version}.jar
 ENV LIQUIBASE_JAVAFILE=liquibase.integration.commandline.Main
@@ -40,11 +43,10 @@ ENV LIQUIBASE_LOG=/liquibase/logs/liquibase.log
 ENV LIQUIBASE_LOGLEVEL=debug
 
 # Add exec to launcher
-RUN chmod +x /liquibase/templates/Launcher.sh
+RUN /bin/bash -c 'chmod +x /liquibase/templates/Launcher.sh';
+
 
 WORKDIR /liquibase/data
-
-# SHELL ['/bin/sh', '-c']
 
 
 # *** RUN ***
