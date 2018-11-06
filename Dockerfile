@@ -23,8 +23,21 @@ RUN mkdir /liquibase;\
 	mkdir /liquibase/templates;\
 	mkdir /liquibase/results;
 
-# Retrieve Launcher
+# Retrieve Launcher and add exec permission to launcher
 COPY ./template/* /liquibase/templates/
+RUN /bin/bash -c 'chmod +x /liquibase/templates/Launcher.sh';
+
+# Retrieve SQLPLUS package and add exec permission
+COPY ./liquibase/tools/* /liquibase/tools/
+
+# Unzip SQLPLUS, update permission adn clean source package
+RUN unzip /liquibase/tools/instantclient-basic-linux.x64-12.2.0.1.0.zip -o -q
+RUN unzip /liquibase/tools/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip -o -q
+
+RUN /bin/bash -c 'chmod +x /liquibase/tools/instantclient_12_2/sqlplus';
+
+RUN rm /liquibase/tools/instantclient-basic-linux.x64-12.2.0.1.0.zip -f
+RUN rm /liquibase/tools/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip -f
 
 # Retrieve Liquibase package
 RUN cd /liquibase/tools;\
@@ -42,10 +55,6 @@ ENV LIQUIBASE_JAVAFILE=liquibase.integration.commandline.Main
 ENV LIQUIBASE_DRIVER=oracle.jdbc.OracleDriver
 ENV LIQUIBASE_LOG=/liquibase/logs/liquibase.log
 ENV LIQUIBASE_LOGLEVEL=debug
-
-# Add exec to launcher
-RUN /bin/bash -c 'chmod +x /liquibase/templates/Launcher.sh';
-
 
 WORKDIR /liquibase/data
 
