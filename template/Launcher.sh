@@ -3,7 +3,7 @@ LIQUIBASE_CHANGELOG="./db/changelog/schema-FR_FRT_TL_AUTO_11121_OWN/changelog-ma
 LIQUIBASE_SQLPLUSPATH="@./db/changelog/schema-FR_FRT_TL_AUTO_11121_OWN"
 LIQUIBASE_ACTION="status"
 PACKAGE_INFO="5.1.13-SNAPSHOT"
-LIQUIBASE_CONTEXT=d"ev, init, sqlplus"
+LIQUIBASE_CONTEXT="dev, init, sqlplus"
 LIQUIBASE_URL="jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=137.74.197.63)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=ORCLCDB)))"
 LIQUIBASE_SQLPLUSCONN="c##CodeAPMyAPPown/MyAPPownpwd@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=137.74.197.63)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=ORCLCDB)))"
 LIQUIBASE_USR="c##CodeAPMyAPPown"
@@ -14,7 +14,7 @@ cd /liquibase/data
 
 # BEGIN - To Delete #
 # Get test package
-mv liquibase/templates/samplepim3-db-5.1.13-SNAPSHOT.zip .
+mv /liquibase/templates/samplepim3-db-5.1.13-SNAPSHOT.zip .
 unzip samplepim3-db-5.1.13-SNAPSHOT.zip -o -q
 rm samplepim3-db-5.1.13-SNAPSHOT.zip -f
 # END - To Delete
