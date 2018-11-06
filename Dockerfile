@@ -46,7 +46,7 @@ ENV PATH=/liquibase/tools/instantclient_12_2:${PATH}
 # Retrieve Liquibase package
 RUN cd /liquibase/tools;\
 	curl -SOLs ${liquibase_download_url};\
-	curl -SOLs ${snakeyaml_download_url};\
+	curl -SOLs ${snakeyaml_download_url};
 
 # Delete curl from image
 RUN apk del curl && \
