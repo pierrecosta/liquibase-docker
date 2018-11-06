@@ -33,7 +33,8 @@ RUN cd /liquibase/tools;\
 	curl -SOLs ${ojdbc_download_url};
 
 # Delete curl from image
-apk del curl
+RUN apk del curl && \
+    rm -rf /var/cache/apk/*
 
 # Unpack the distribution
 ENV LIQUIBASE_CLASSPATH=/liquibase/tools/iquibase-core-${liquibase_version}.jar:/liquibase/tools/snakeyaml-${snakeyaml_version}.jar:/liquibase/tools/${ojdbc_name}-${ojdbc_version}.jar
