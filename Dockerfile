@@ -20,7 +20,7 @@ RUN mkdir /liquibase;\
 	mkdir /liquibase/results;
 
 # Retrieve Launcher
-COPY ./templates/* /liquibase/templates/
+COPY ./template/* /liquibase/templates/
 
 # Retrieve Liquibase package
 RUN cd /liquibase/tools;\
