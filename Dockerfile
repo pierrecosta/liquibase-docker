@@ -39,9 +39,12 @@ ENV LIQUIBASE_DRIVER=oracle.jdbc.OracleDriver
 ENV LIQUIBASE_LOG=/liquibase/logs/liquibase.log
 ENV LIQUIBASE_LOGLEVEL=debug
 
+# Add exec to launcher
+RUN chmod +x /liquibase/templates/Launcher.sh
+
 WORKDIR /liquibase/data
-ONBUILD VOLUME /liquibase/data
-# CMD ['/bin/sh', '-i']
+
+# SHELL ['/bin/sh', '-c']
 
 
 # *** RUN ***
