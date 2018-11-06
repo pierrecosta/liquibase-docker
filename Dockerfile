@@ -1,9 +1,11 @@
 FROM anapsix/alpine-java:8_jdk
 LABEL maintainer="pierre.costa@capgemini.com"
 
-# Add curl to alpine
+# Add curl and libaio to alpine
 RUN apk add --update curl && \
-    rm -rf /var/cache/apk/*
+    rm -rf /var/cache/apk/*;\
+	apk add --update libaio && \
+    rm -rf /var/cache/apk/*;
 
 # Set liquibase variables
 ARG liquibase_version=3.5.5
@@ -30,13 +32,18 @@ RUN /bin/bash -c 'chmod +x /liquibase/templates/Launcher.sh';
 # Retrieve SQLPLUS package and add exec permission
 COPY ./liquibase/tools/* /liquibase/tools/
 
-# Unzip SQLPLUS, update permission adn clean source package
+# Unzip SQLPLUS, update permission, create synonym, add lib path and clean source package
 RUN cd /liquibase/tools;\
 	unzip instantclient-basic-linux.x64-12.2.0.1.0.zip -o -q;\
 	unzip instantclient-sqlplus-linux.x64-12.2.0.1.0.zip -o -q;\
 	/bin/bash -c 'chmod +x /liquibase/tools/instantclient_12_2/sqlplus';\
+	ln -s /liquibase/tools/instantclient_12_2/libclntsh.so.12.1 /liquibase/tools/instantclient_12_2/libclntsh.so;\
+	ln -s /liquibase/tools/instantclient_12_2/libocci.so.12.1 /liquibase/tools/instantclient_12_2/libocci.so;\
+	export LD_LIBRARY_PATH=/liquibase/tools/instantclient_12_2:$LD_LIBRARY_PATH;\
+	export PATH=/liquibase/tools/instantclient_12_2:$PATH;\
 	rm /liquibase/tools/instantclient-basic-linux.x64-12.2.0.1.0.zip -f;\
 	rm /liquibase/tools/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip -f;
+
 
 # Retrieve Liquibase package
 RUN cd /liquibase/tools;\
