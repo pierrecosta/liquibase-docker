@@ -32,8 +32,8 @@ COPY ./liquibase/tools/* /liquibase/tools/
 
 # Unzip SQLPLUS, update permission adn clean source package
 RUN cd /liquibase/tools;\
-RUN unzip instantclient-basic-linux.x64-12.2.0.1.0.zip -o -q;
-RUN unzip instantclient-sqlplus-linux.x64-12.2.0.1.0.zip -o -q;
+RUN /bin/bash -c 'unzip instantclient-basic-linux.x64-12.2.0.1.0.zip -o -q';
+RUN /bin/bash -c 'unzip instantclient-sqlplus-linux.x64-12.2.0.1.0.zip -o -q';
 
 RUN /bin/bash -c 'chmod +x /liquibase/tools/instantclient_12_2/sqlplus';
 
