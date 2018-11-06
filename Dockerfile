@@ -41,7 +41,7 @@ ENV LIQUIBASE_LOGLEVEL=debug
 
 WORKDIR /liquibase/data
 ONBUILD VOLUME /liquibase/data
-CMD ['/bin/sh', '-i']
+# CMD ['/bin/sh', '-i']
 
 
 # *** RUN ***
